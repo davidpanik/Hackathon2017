@@ -10,6 +10,7 @@
 
 @import '_functions.scss';
 @import '_reset';
+@import '_grid';
 @import '_mixins.scss';
 @import '_sprites';
 @import '_fontface.scss'; // Font face declarations
@@ -18,5 +19,4 @@
 @import '_colours.scss';
 @import '_utility-classes.scss';
 @import '_typography.scss';
-@import '_utility-classes.scss';
-@import '_grid';
+@import '_button.scss';

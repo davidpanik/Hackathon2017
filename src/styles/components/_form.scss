@@ -1,0 +1,79 @@
+form {
+  margin: 20px;
+  border: 1px solid $primary-color;
+  padding: 20px;
+  display: inline-block;
+
+  #part1,
+  #part2 {
+    position: relative;
+    height: 100%;
+    transition: opacity 0.5s;
+    transition-delay: 0.5s;
+    &:before {
+      display: block;
+      content: "";
+      position: absolute;
+      top: 0px;
+      right: 0;
+      height: 100%;
+      width: 0;
+      background-color: #fff;
+      transition: 0.5s;
+    }
+
+    &.fadeOut {
+      &:before {
+        width: 100%;
+      }
+    }
+
+    &.fadeIn {
+      opacity: 1;
+    }
+  }
+
+  #part1 {
+    opacity: 1;
+  }
+
+  #part2 {
+    opacity: 0;
+  }
+
+  label, input:not(.button) {
+    margin-bottom: 5px;
+    font-size: 1.6rem;
+    display: block;
+    width: 100%;
+  }
+
+  label {
+    text-align: center;
+  }
+
+  input {
+    padding: 5px;
+  }
+
+  .button {
+    width: 100%;
+  }
+
+
+
+  @media (min-width: $breakpoint-sm) {
+    label, input:not(.button) {
+      width: 200px;
+      display: inline-block;
+    }
+    label {
+      text-align: right;
+    }
+
+    .button {
+
+      width: 200px;
+    }
+  }
+}
