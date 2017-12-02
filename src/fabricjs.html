@@ -4,14 +4,18 @@
 </style>
 
 
+<p>
+	<button id="zoomIn">+</button>
+	<button id="zoomOut">-</button>
 
-<button id="zoomIn">+</button>
-<button id="zoomOut">-</button>
+	<button id="goLeft"><</button>
+	<button id="goRight">></button>
+	<button id="goUp">Up</button>
+	<button id="goDown">Down</button>
+	<button id="goDown">Down</button>
+	<a id="save" href="#">Save image</a>
+</p>
 
-<button id="goLeft"><</button>
-<button id="goRight">></button>
-<button id="goUp">Up</button>
-<button id="goDown">Down</button>
 <div id="canvasContainer">
     <canvas id="c" width="1200" height="800"></canvas>
 </div>
@@ -27,11 +31,12 @@
 	var canvasBottom = 4 * 1000;
 	var stickmanHeight = 200;
 	var grasswidth = 655;
+	var grassHeight = 700;
 
 	function addSkyScrapers() {
 		fabric.Image.fromURL('/images/skyscraper1.png', function(oImg) {
 			oImg.set({'left': 1600});
-			oImg.set({'top': canvasBottom});
+			oImg.set({'top': canvasBottom - grassHeight});
 			oImg.originY = 'bottom';
 			oImg.hasControls = false;
 			oImg.hasBorders = false;
@@ -44,7 +49,7 @@
 
 		fabric.Image.fromURL('/images/skyscraper2.png', function(oImg) {
 			oImg.set({'left': 4000});
-			oImg.set({'top': canvasBottom});
+			oImg.set({'top': canvasBottom - grassHeight});
 			oImg.originY = 'bottom';
 			oImg.hasControls = false;
 			oImg.hasBorders = false;
@@ -59,9 +64,9 @@
 	function addGrass() {
 		var amountOfGrass = 0;
 
-		for (var x = 0; x < 10; x++) {
+		for (var x = 0; x < 20; x++) {
 			fabric.Image.fromURL('/images/grass.png', function(oImg) {
-				oImg.set({'left': grasswidth * amountOfGrass++});
+				oImg.set({'left': -2000 + (grasswidth * amountOfGrass++)});
 				oImg.set({'top': canvasBottom});
 				oImg.originY = 'bottom';
 				oImg.hasControls = false;
@@ -77,7 +82,7 @@
 
 	function setZoomScale() {
 		canvas.setZoom(0.1);
-		pan(200, 350);
+		pan(200, 450);
 	}
 
 	addSkyScrapers();
@@ -99,8 +104,8 @@
 
 	function addPerson(image, name) {
 		fabric.Image.fromURL(image, function(oImg) {
-			oImg.set({'left': 800});
-			oImg.set({'top': canvasBottom - (numberOfPeople++ * stickmanHeight)});
+			oImg.set({'left': 400});
+			oImg.set({'top': canvasBottom - grassHeight - (numberOfPeople++ * stickmanHeight)});
 			oImg.originY = 'bottom';
 			oImg.hasControls = false;
 			oImg.hasBorders = false;
@@ -182,6 +187,15 @@
 
 		$('#goDown').click(function(){
 			pan(0, 10);
+		});
+
+		$('#save').click(function(){
+      		var image = $('#c')[0].toDataURL('image/png').replace('image/png', 'image/octet-stream');
+
+      		console.log(image);
+			var filename = 'standup_' + (new Date()).getTime() + '.png';
+
+			$(this).attr('href', image).attr('download', filename);
 		});
 
 		var $canvas = $('.upper-canvas');
