@@ -1,12 +1,20 @@
 form {
   margin: 20px;
   border: 1px solid $primary-color;
-  padding: 20px;
+
   display: inline-block;
+  position: relative;
+
+  width: 300px;
+  height: 400px;
 
   #part1,
   #part2 {
-    position: relative;
+    // margin: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
     height: 100%;
     transition: opacity 0.5s;
     transition-delay: 0.5s;
@@ -14,7 +22,7 @@ form {
       display: block;
       content: "";
       position: absolute;
-      top: 0px;
+      top: 0;
       right: 0;
       height: 100%;
       width: 0;
@@ -29,6 +37,7 @@ form {
     }
 
     &.fadeIn {
+      display: block;
       opacity: 1;
     }
   }
@@ -38,6 +47,7 @@ form {
   }
 
   #part2 {
+    display: none;
     opacity: 0;
   }
 
@@ -56,10 +66,6 @@ form {
     padding: 5px;
   }
 
-  .button {
-    width: 100%;
-  }
-
 
 
   @media (min-width: $breakpoint-sm) {
@@ -72,8 +78,17 @@ form {
     }
 
     .button {
-
       width: 200px;
     }
   }
+}
+
+.item img {
+  max-height: 200px;
+  width: auto
+}
+
+.carousel-control.right,
+.carousel-control.left {
+  background: none;
 }
