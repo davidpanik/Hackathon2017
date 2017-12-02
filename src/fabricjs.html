@@ -56,8 +56,6 @@
 	var skyscraper2Height = 300 * 100; // 300
 	var skyscraper3Height = 828 * 100; // 828
 
-	loadData();
-
 	function loadData() {
 		for (var x in localStorage) {
 			if (x.indexOf('person_') === 0) {
@@ -143,12 +141,14 @@
 	addGrass();
 	setZoomScale();
 
-	addPerson('/images/F1.png', 'Matt', 'Brawn', 'Make the world a better place', 100);
-	addPerson('/images/M1.png', 'Kat', 'Nowotny', 'Make the world a better place', 100);
+	addPerson('/images/M1.png', 'Matt', 'Brawn', 'Make the world a better place', 100);
+	addPerson('/images/M1.png', 'Kat', 'Nowotny', 'Make the world an even better place', 100);
 	addPerson('/images/F2.png', 'Nicola', 'Dunlop', 'Make the world a better place', 100);
-	addPerson('/images/M2.png', 'Shelley', 'Dewar', 'Make the world a better place', 100);
-	addPerson('/images/F3.png', 'Alexandra', 'Haret', 'Make the world a better place', 100);
-	addPerson('/images/M3.png', 'David', 'Storey', 'Make the world a better place', 100);
+	addPerson('/images/M2.png', 'David', 'Storey', 'Make the world a better place', 100);
+	addPerson('/images/F3.png', 'Shelley', 'Dewar', 'Make the world a better place', 100);
+	addPerson('/images/F4.png', 'Alexandra', 'Haret', 'Make the world a better place', 100);
+
+	loadData();
 
 	// setInterval(function() {
 	// 	addPerson('/images/person7.png', 'David');
