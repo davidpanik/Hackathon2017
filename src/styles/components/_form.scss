@@ -1,0 +1,42 @@
+form {
+  margin: 20px;
+  border: 1px solid $primary-color;
+  padding: 20px;
+  display: inline-block;
+
+  label, input:not(.button) {
+    margin-bottom: 5px;
+    font-size: 1.6rem;
+    display: block;
+    width: 100%;
+  }
+
+  label {
+    text-align: center;
+  }
+
+  input {
+    padding: 5px;
+  }
+
+  .button {
+    width: 100%;
+  }
+
+
+
+  @media (min-width: $breakpoint-sm) {
+    label, input:not(.button) {
+      width: 200px;
+      display: inline-block;
+    }
+    label {
+      text-align: right;
+    }
+
+    .button {
+      float: right;
+      width: 200px;
+    }
+  }
+}
