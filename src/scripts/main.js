@@ -2,6 +2,6 @@
 
 'use strict';
 
-import hello from './module';
+import form from './form';
 
-hello('James');
+form();
