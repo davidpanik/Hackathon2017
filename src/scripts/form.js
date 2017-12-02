@@ -21,6 +21,8 @@ export default function form() {
 
     localStorage.setItem('person' + person.id, JSON.stringify(person));
     console.log(person);
+
+    window.open('./fabricjs.html');
   }
 
   function gotoPart2() {
