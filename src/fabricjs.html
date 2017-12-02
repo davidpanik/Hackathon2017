@@ -25,6 +25,8 @@
 </div>
 
 <div id="sub-modal" style="display: none;">
+	<img src="" id="personImage" style="float: left; margin-right: 40px;">
+
 	<h2><span id="firstName"></span> <span id="lastName"></span></h2>
 	<h3>What are you standing for?</h3>
 	<p id="reason"></p>
@@ -169,6 +171,7 @@
 			// oImg.hoverCursor = 'cursor';
 
 			oImg.custom = {
+				image: image,
 				firstName: firstName,
 				lastName: lastName,
 				reason: reason,
@@ -185,6 +188,7 @@
 		if (options.target && options.target.custom) {
 			var name = options.target.custom.name;
 
+			$('#personImage').attr('src', options.target.custom.image);
 			$('#firstName').html(options.target.custom.firstName);
 			$('#lastName').html(options.target.custom.lastName);
 			$('#reason').html(options.target.custom.reason);
