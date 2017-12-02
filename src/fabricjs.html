@@ -75,7 +75,7 @@
 
 	function loadData() {
 		for (var x in localStorage) {
-			if (x.indexOf('person_') === 0) {
+			if (x.indexOf('person') === 0) {
 				var person = JSON.parse(localStorage.getItem(x));
 				console.log(person);
 				console.log(person.firstName);
