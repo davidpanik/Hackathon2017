@@ -2,38 +2,39 @@
 
 export default function form() {
 
-  document.getElementById('next').onmouseup = function(element) {
+  var person = {};
 
-  }
-
-  document.getElementById('submit').onmouseup = function(element) {
+  document.getElementById('next').onclick = function() {
     var formData = [];
-    var person = {};
     formData = $('form').serializeArray();
-
-    person.id = ID();
-    person.timetamp = new Date().getTime();
-
+    person.id = "person" + ID();
     formData.forEach(function(elem) {
       person[elem.name] = elem.value;
     });
-    var string = 'person' + person.id;
-    localStorage.setItem(string, JSON.stringify(person));
-
     gotoPart2();
+    console.log(person);
   }
 
+  document.getElementById('submit').onmouseup = function() {
+    console.log(person);
+    person.timestamp = new Date().getTime();
 
-function gotoPart2() {
+    localStorage.setItem('person' + person.id, JSON.stringify(person));
+    console.log(person);
+  }
+
+  function gotoPart2() {
     $('#part1').addClass('fadeOut');
     $('#part2').addClass('fadeIn');
-}
+    $('.item').click(function(element) {
+      var avatarId = $(this).attr('id');
+      person.avatar = avatarId;
+      console.log(person);
+    });
 
-
-  // document.getElementById('findButton').onclick = function() {
-  //   // var lastPerson = localStorage.getItem('person' + gloalId);
-  //   // console.log("lastPerson: " + lastPerson);
-  // }
+    console.log('at end of p2');
+    console.log(person);
+  }
 
   function ID() {
     // Math.random should be unique because of its seeding algorithm.

@@ -1,20 +1,31 @@
 form {
   margin: 20px;
   border: 1px solid $primary-color;
-  padding: 20px;
+
   display: inline-block;
+  position: relative;
+
+  padding: 10px;
+
+  width: 400px;
+
+  height: 400px;
 
   #part1,
   #part2 {
-    position: relative;
-    height: 100%;
+    margin: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(100% - 20px);
+    height:  calc(100% - 20px);
     transition: opacity 0.5s;
     transition-delay: 0.5s;
     &:before {
       display: block;
       content: "";
       position: absolute;
-      top: 0px;
+      top: 0;
       right: 0;
       height: 100%;
       width: 0;
@@ -29,6 +40,7 @@ form {
     }
 
     &.fadeIn {
+      display: block;
       opacity: 1;
     }
   }
@@ -38,6 +50,7 @@ form {
   }
 
   #part2 {
+    display: none;
     opacity: 0;
   }
 
@@ -60,20 +73,23 @@ form {
     width: 100%;
   }
 
+}
 
+.item img {
+  max-height: 250px;
+  width: auto;
+  margin-bottom: 20px;
+}
 
-  @media (min-width: $breakpoint-sm) {
-    label, input:not(.button) {
-      width: 200px;
-      display: inline-block;
-    }
-    label {
-      text-align: right;
-    }
+.carousel-control.right,
+.carousel-control.left {
+  background: none;
+}
 
-    .button {
+h1 {
+    font-size: 3rem;
+    text-align: center;
+    color: $primary-color;
+    margin-bottom: 10px;
 
-      width: 200px;
-    }
-  }
 }
