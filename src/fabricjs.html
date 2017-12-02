@@ -21,64 +21,67 @@
 <script>
 	var canvas = new fabric.Canvas('c');
 
-	var canvasBottom = 800;
-	var stickmanHeight = 50;
+	var canvasBottom = 4 * 1000;
+	var stickmanHeight = 200;
+	var grasswidth = 655;
 
-	fabric.Image.fromURL('/images/skyscraper1.png', function(oImg) {
-		oImg.set({'left': 400});
-		oImg.set({'top': canvasBottom});
-		oImg.originY = 'bottom';
-		oImg.hasControls = false;
-		oImg.hasBorders = false;
-		oImg.selectable = false;
-		// oImg.hoverCursor = 'pointer';
-		oImg.hoverCursor = 'cursor';
+	function addSkyScrapers() {
+		fabric.Image.fromURL('/images/skyscraper1.png', function(oImg) {
+			oImg.set({'left': 600});
+			oImg.set({'top': canvasBottom});
+			oImg.originY = 'bottom';
+			oImg.hasControls = false;
+			oImg.hasBorders = false;
+			oImg.selectable = false;
+			// oImg.hoverCursor = 'pointer';
+			oImg.hoverCursor = 'cursor';
 
-		canvas.add(oImg);
-	});
+			canvas.add(oImg);
+		});
 
-	fabric.Image.fromURL('/images/skyscraper2.png', function(oImg) {
-		oImg.set({'left': 800});
-		oImg.set({'top': canvasBottom});
-		oImg.originY = 'bottom';
-		oImg.hasControls = false;
-		oImg.hasBorders = false;
-		oImg.selectable = false;
-		// oImg.hoverCursor = 'pointer';
-		oImg.hoverCursor = 'cursor';
+		fabric.Image.fromURL('/images/skyscraper2.png', function(oImg) {
+			oImg.set({'left': 2500});
+			oImg.set({'top': canvasBottom});
+			oImg.originY = 'bottom';
+			oImg.hasControls = false;
+			oImg.hasBorders = false;
+			oImg.selectable = false;
+			// oImg.hoverCursor = 'pointer';
+			oImg.hoverCursor = 'cursor';
 
-		canvas.add(oImg);
-	});
+			canvas.add(oImg);
+		});
+	}
 
-	fabric.Image.fromURL('/images/grass.png', function(oImg) {
-		oImg.set({'left': 0});
-		oImg.set({'top': canvasBottom});
-		oImg.originY = 'bottom';
-		oImg.hasControls = false;
-		oImg.hasBorders = false;
-		oImg.selectable = false;
-		// oImg.hoverCursor = 'pointer';
-		oImg.hoverCursor = 'cursor';
+	function addGrass() {
+		var amountOfGrass = 0;
 
-		canvas.add(oImg);
-	});
-	fabric.Image.fromURL('/images/grass.png', function(oImg) {
-		oImg.set({'left': 655});
-		oImg.set({'top': canvasBottom});
-		oImg.originY = 'bottom';
-		oImg.hasControls = false;
-		oImg.hasBorders = false;
-		oImg.selectable = false;
-		// oImg.hoverCursor = 'pointer';
-		oImg.hoverCursor = 'cursor';
+		for (var x = 0; x < 10; x++) {
+			fabric.Image.fromURL('/images/grass.png', function(oImg) {
+				oImg.set({'left': grasswidth * amountOfGrass++});
+				oImg.set({'top': canvasBottom});
+				oImg.originY = 'bottom';
+				oImg.hasControls = false;
+				oImg.hasBorders = false;
+				oImg.selectable = false;
+				// oImg.hoverCursor = 'pointer';
+				oImg.hoverCursor = 'cursor';
 
-		canvas.add(oImg);
-	});
+				canvas.add(oImg);
+			});
+		}
+	}
 
-	canvas.setZoom(0.8);
-	var units = -100;
-	var delta = new fabric.Point(0,-units);
-	canvas.relativePan(delta);
+	function setZoomScale() {
+		canvas.setZoom(0.1);
+		var units = -350;
+		var delta = new fabric.Point(0,-units);
+		canvas.relativePan(delta);
+	}
+
+	addSkyScrapers();
+	addGrass();
+	setZoomScale();
 
 	addPerson('/images/stickman.png', 0);
 	addPerson('/images/stickman.png', 1);
