@@ -15,16 +15,11 @@ export default function form() {
     console.log(person);
   }
 
-  document.getElementById('submit').omnouseup = function() {
+  document.getElementById('submit').onmouseup = function() {
     console.log(person);
     person.timestamp = new Date().getTime();
-    formData.forEach(function(elem) {
-      person[elem.name] = elem.value;
-    });
-    var string = 'person' + person.id;
-    var person = localStorage.get(id);
 
-    localStorage.setItem(string, JSON.stringify(person));
+    localStorage.setItem('person' + person.id, JSON.stringify(person));
     console.log(person);
   }
 

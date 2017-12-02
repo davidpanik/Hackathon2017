@@ -5,17 +5,20 @@ form {
   display: inline-block;
   position: relative;
 
-  width: 300px;
+  padding: 10px;
+
+  width: 400px;
+
   height: 400px;
 
   #part1,
   #part2 {
-    // margin: 10px;
+    margin: 10px;
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: calc(100% - 20px);
+    height:  calc(100% - 20px);
     transition: opacity 0.5s;
     transition-delay: 0.5s;
     &:before {
@@ -66,29 +69,27 @@ form {
     padding: 5px;
   }
 
-
-
-  @media (min-width: $breakpoint-sm) {
-    label, input:not(.button) {
-      width: 200px;
-      display: inline-block;
-    }
-    label {
-      text-align: right;
-    }
-
-    .button {
-      width: 200px;
-    }
+  .button {
+    width: 100%;
   }
+
 }
 
 .item img {
-  max-height: 200px;
-  width: auto
+  max-height: 250px;
+  width: auto;
+  margin-bottom: 20px;
 }
 
 .carousel-control.right,
 .carousel-control.left {
   background: none;
+}
+
+h1 {
+    font-size: 3rem;
+    text-align: center;
+    color: $primary-color;
+    margin-bottom: 10px;
+
 }
