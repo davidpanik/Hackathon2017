@@ -60,13 +60,26 @@
 	var skyscraper2Height = 300 * 100; // 300
 	var skyscraper3Height = 828 * 100; // 828
 
+	var imagePaths = {
+		'f1': '/images/F1.png',
+		'f2': '/images/F2.png',
+		'f3': '/images/F3.png',
+		'f4': '/images/F4.png',
+		'f5': '/images/F5.png',
+		'm1': '/images/M1.png',
+		'm2': '/images/M2.png',
+		'm3': '/images/M3.png',
+		'm4': '/images/M4.png',
+		'm5': '/images/M5.png'
+	};
+
 	function loadData() {
 		for (var x in localStorage) {
 			if (x.indexOf('person_') === 0) {
 				var person = JSON.parse(localStorage.getItem(x));
 				console.log(person);
 				console.log(person.firstName);
-				addPerson('/images/F1.png', person.firstName, person.lastName, person.reason, person.donationAmount);
+				addPerson(imagePaths[person.avatar], person.firstName, person.lastName, person.reason, person.donationAmount);
 			}
 		}
 	}
