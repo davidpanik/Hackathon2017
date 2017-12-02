@@ -1,5 +1,5 @@
 <style>
-	#canvasContainer {border: dotted gray thin ;}
+	#canvasContainer {width: 1200px; margin: 30px auto;}
 	button { cursor: pointer; }
 </style>
 
@@ -13,7 +13,7 @@
 <button id="goUp">Up</button>
 <button id="goDown">Down</button>
 <div id="canvasContainer">
-    <canvas id="c" width="800" height="800"></canvas>
+    <canvas id="c" width="1200" height="800"></canvas>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -22,6 +22,7 @@
 <script>
 	var canvas = new fabric.Canvas('c');
 	canvas.selection = false;
+	canvas.backgroundColor = '#ADE2FF';
 
 	var canvasBottom = 4 * 1000;
 	var stickmanHeight = 200;
