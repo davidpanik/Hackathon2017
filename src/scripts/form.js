@@ -2,9 +2,11 @@
 
 export default function form() {
 
-  document.getElementById('submitButton').onclick = function(element) {
-    console.log('called');
-    // element.preventDefault();
+  document.getElementById('next').onmouseup = function(element) {
+
+  }
+
+  document.getElementById('submit').onmouseup = function(element) {
     var formData = [];
     var person = {};
     formData = $('form').serializeArray();
@@ -15,13 +17,18 @@ export default function form() {
     formData.forEach(function(elem) {
       person[elem.name] = elem.value;
     });
-
-
     var string = 'person' + person.id;
     localStorage.setItem(string, JSON.stringify(person));
-    console.log(person);
 
+    gotoPart2();
   }
+
+
+function gotoPart2() {
+    $('#part1').addClass('fadeOut');
+    $('#part2').addClass('fadeIn');
+}
+
 
   // document.getElementById('findButton').onclick = function() {
   //   // var lastPerson = localStorage.getItem('person' + gloalId);
