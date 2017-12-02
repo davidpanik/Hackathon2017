@@ -20,6 +20,7 @@
 
 <script>
 	var canvas = new fabric.Canvas('c');
+	canvas.selection = false;
 
 	var canvasBottom = 4 * 1000;
 	var stickmanHeight = 200;
@@ -27,7 +28,7 @@
 
 	function addSkyScrapers() {
 		fabric.Image.fromURL('/images/skyscraper1.png', function(oImg) {
-			oImg.set({'left': 600});
+			oImg.set({'left': 1600});
 			oImg.set({'top': canvasBottom});
 			oImg.originY = 'bottom';
 			oImg.hasControls = false;
@@ -40,7 +41,7 @@
 		});
 
 		fabric.Image.fromURL('/images/skyscraper2.png', function(oImg) {
-			oImg.set({'left': 2500});
+			oImg.set({'left': 4000});
 			oImg.set({'top': canvasBottom});
 			oImg.originY = 'bottom';
 			oImg.hasControls = false;
@@ -74,9 +75,7 @@
 
 	function setZoomScale() {
 		canvas.setZoom(0.1);
-		var units = -350;
-		var delta = new fabric.Point(0,-units);
-		canvas.relativePan(delta);
+		pan(200, 350);
 	}
 
 	addSkyScrapers();
@@ -91,7 +90,7 @@
 
 	function addPerson(image, position) {
 		fabric.Image.fromURL(image, function(oImg) {
-			oImg.set({'left': 200});
+			oImg.set({'left': 800});
 			oImg.set({'top': canvasBottom - (position * stickmanHeight)});
 			oImg.originY = 'bottom';
 			oImg.hasControls = false;
@@ -104,38 +103,75 @@
 		});
 	}
 
+	function zoomIn(amount) {
+		amount = amount ? amount : 1.1;
+		canvas.setZoom(canvas.getZoom() * amount);
+	}
+
+	function zoomOut(amount) {
+		amount = amount ? amount : 1.1;
+		canvas.setZoom(canvas.getZoom() / amount);
+	}
+
+	function pan(horizonal, vertical) {
+		var delta = new fabric.Point(horizonal, vertical);
+		canvas.relativePan(delta);
+	}
 
 	$(function(){
 		$('#zoomIn').click(function(){
-			canvas.setZoom(canvas.getZoom() * 1.1 );
+			zoomIn();
 		});
 
 		$('#zoomOut').click(function(){
-			canvas.setZoom(canvas.getZoom() / 1.1 );
+			zoomOut();
 		});
 
 		$('#goRight').click(function(){
-			var units = 10 ;
-			var delta = new fabric.Point(units,0);
-			canvas.relativePan(delta);
+			pan(10, 0);
 		});
 
 		$('#goLeft').click(function(){
-			var units = 10 ;
-			var delta = new fabric.Point(-units,0);
-			canvas.relativePan(delta);
+			pan(-10, 0);
 		});
 
 		$('#goUp').click(function(){
-			var units = 10 ;
-			var delta = new fabric.Point(0,-units);
-			canvas.relativePan(delta);
+			pan(0, -10);
 		});
 
 		$('#goDown').click(function(){
-			var units = 10 ;
-			var delta = new fabric.Point(0,units);
-			canvas.relativePan(delta);
+			pan(0, 10);
 		});
+
+
+		var dragStart, dragged;
+		var $canvas = $('.upper-canvas');
+		var lastX=$canvas[0].width/2, lastY=$canvas[0].height/2;
+
+		$canvas[0].addEventListener('mousedown',function(evt) {
+			document.body.style.mozUserSelect = document.body.style.webkitUserSelect = document.body.style.userSelect = 'none';
+			lastX = evt.offsetX || (evt.pageX - $canvas[0].offsetLeft);
+			lastY = evt.offsetY || (evt.pageY - $canvas[0].offsetTop);
+			dragStart = [lastX, lastY];
+			dragged = false;
+		}, false);
+
+		$canvas[0].addEventListener('mousemove',function(evt) {
+			lastX = evt.offsetX || (evt.pageX - $canvas[0].offsetLeft);
+			lastY = evt.offsetY || (evt.pageY - $canvas[0].offsetTop);
+			dragged = true;
+			if (dragStart) {
+				var pt = [lastX, lastY];
+				var scale = 0.12;
+				pan((pt[0]-dragStart[0]) * scale, (pt[1]-dragStart[1]) * scale);
+				// ctx.translate(pt.x-dragStart.x,pt.y-dragStart.y);
+				// redraw();
+			}
+		}, false);
+
+		$canvas[0].addEventListener('mouseup',function(evt){
+			dragStart = null;
+			// if (!dragged) zoom(evt.shiftKey ? -1 : 1 );
+		},false);
 	});
 </script>
