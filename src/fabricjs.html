@@ -1,0 +1,197 @@
+<style>
+	#canvasContainer {width: 1200px; margin: 30px auto;}
+	button { cursor: pointer; }
+</style>
+
+
+
+<button id="zoomIn">+</button>
+<button id="zoomOut">-</button>
+
+<button id="goLeft"><</button>
+<button id="goRight">></button>
+<button id="goUp">Up</button>
+<button id="goDown">Down</button>
+<div id="canvasContainer">
+    <canvas id="c" width="1200" height="800"></canvas>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.7.20/fabric.min.js"></script>
+
+<script>
+	var canvas = new fabric.Canvas('c');
+	canvas.selection = false;
+	canvas.backgroundColor = '#ADE2FF';
+
+	var canvasBottom = 4 * 1000;
+	var stickmanHeight = 200;
+	var grasswidth = 655;
+
+	function addSkyScrapers() {
+		fabric.Image.fromURL('/images/skyscraper1.png', function(oImg) {
+			oImg.set({'left': 1600});
+			oImg.set({'top': canvasBottom});
+			oImg.originY = 'bottom';
+			oImg.hasControls = false;
+			oImg.hasBorders = false;
+			oImg.selectable = false;
+			// oImg.hoverCursor = 'pointer';
+			oImg.hoverCursor = 'cursor';
+
+			canvas.add(oImg);
+		});
+
+		fabric.Image.fromURL('/images/skyscraper2.png', function(oImg) {
+			oImg.set({'left': 4000});
+			oImg.set({'top': canvasBottom});
+			oImg.originY = 'bottom';
+			oImg.hasControls = false;
+			oImg.hasBorders = false;
+			oImg.selectable = false;
+			// oImg.hoverCursor = 'pointer';
+			oImg.hoverCursor = 'cursor';
+
+			canvas.add(oImg);
+		});
+	}
+
+	function addGrass() {
+		var amountOfGrass = 0;
+
+		for (var x = 0; x < 10; x++) {
+			fabric.Image.fromURL('/images/grass.png', function(oImg) {
+				oImg.set({'left': grasswidth * amountOfGrass++});
+				oImg.set({'top': canvasBottom});
+				oImg.originY = 'bottom';
+				oImg.hasControls = false;
+				oImg.hasBorders = false;
+				oImg.selectable = false;
+				// oImg.hoverCursor = 'pointer';
+				oImg.hoverCursor = 'cursor';
+
+				canvas.add(oImg);
+			});
+		}
+	}
+
+	function setZoomScale() {
+		canvas.setZoom(0.1);
+		pan(200, 350);
+	}
+
+	addSkyScrapers();
+	addGrass();
+	setZoomScale();
+
+	addPerson('/images/person1.png', 'Matt');
+	addPerson('/images/person2.png', 'Kat');
+	addPerson('/images/person3.png', 'Nicola');
+	addPerson('/images/person4.png', 'Shelley');
+	addPerson('/images/person5.png', 'Alexandra');
+	addPerson('/images/person6.png', 'David');
+
+	// setInterval(function() {
+	// 	addPerson('/images/person7.png', 'David');
+	// }, 1000);
+
+	var numberOfPeople = 0;
+
+	function addPerson(image, name) {
+		fabric.Image.fromURL(image, function(oImg) {
+			oImg.set({'left': 800});
+			oImg.set({'top': canvasBottom - (numberOfPeople++ * stickmanHeight)});
+			oImg.originY = 'bottom';
+			oImg.hasControls = false;
+			oImg.hasBorders = false;
+			oImg.selectable = false;
+			oImg.hoverCursor = 'pointer';
+			// oImg.hoverCursor = 'cursor';
+
+			oImg.custom = {
+				name: name
+			};
+
+			canvas.add(oImg);
+		});
+	}
+
+	canvas.on('mouse:up', function(options) {
+		if (options.target && options.target.custom) {
+			var name = options.target.custom.name;
+			alert(name);
+		}
+	});
+
+	function zoomIn(amount) {
+		amount = amount ? amount : 1.1;
+		canvas.setZoom(canvas.getZoom() * amount);
+	}
+
+	function zoomOut(amount) {
+		amount = amount ? amount : 1.1;
+		canvas.setZoom(canvas.getZoom() / amount);
+	}
+
+	function pan(horizonal, vertical) {
+		var delta = new fabric.Point(horizonal, vertical);
+		canvas.relativePan(delta);
+	}
+
+
+	$(function(){
+		$('#zoomIn').click(function(){
+			zoomIn();
+		});
+
+		$('#zoomOut').click(function(){
+			zoomOut();
+		});
+
+		$('#goRight').click(function(){
+			pan(10, 0);
+		});
+
+		$('#goLeft').click(function(){
+			pan(-10, 0);
+		});
+
+		$('#goUp').click(function(){
+			pan(0, -10);
+		});
+
+		$('#goDown').click(function(){
+			pan(0, 10);
+		});
+
+		var $canvas = $('.upper-canvas');
+		var lastX=$canvas[0].width/2, lastY=$canvas[0].height/2;
+		var dragStart, dragged;
+
+		$canvas[0].addEventListener('mousedown',function(evt) {
+			document.body.style.mozUserSelect = document.body.style.webkitUserSelect = document.body.style.userSelect = 'none';
+			lastX = evt.offsetX || (evt.pageX - $canvas[0].offsetLeft);
+			lastY = evt.offsetY || (evt.pageY - $canvas[0].offsetTop);
+			dragStart = [lastX, lastY];
+			dragged = false;
+		}, false);
+
+		$canvas[0].addEventListener('mousemove',function(evt) {
+			lastX = evt.offsetX || (evt.pageX - $canvas[0].offsetLeft);
+			lastY = evt.offsetY || (evt.pageY - $canvas[0].offsetTop);
+			dragged = true;
+			if (dragStart) {
+				var pt = [lastX, lastY];
+				var scale = 0.12;
+				pan((pt[0]-dragStart[0]) * scale, (pt[1]-dragStart[1]) * scale);
+				// ctx.translate(pt.x-dragStart.x,pt.y-dragStart.y);
+				// redraw();
+			}
+		}, false);
+
+		$canvas[0].addEventListener('mouseup',function(evt){
+			dragStart = null;
+			// if (!dragged) zoom(evt.shiftKey ? -1 : 1 );
+		},false);
+	});
+</script>
