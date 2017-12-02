@@ -1,5 +1,6 @@
 <style>
 	#canvasContainer {border: dotted gray thin ;}
+	button { cursor: pointer; }
 </style>
 
 
@@ -82,26 +83,44 @@
 	addGrass();
 	setZoomScale();
 
-	addPerson('/images/stickman.png', 0);
-	addPerson('/images/stickman.png', 1);
-	addPerson('/images/stickman.png', 2);
-	addPerson('/images/stickman.png', 3);
-	addPerson('/images/stickman.png', 4);
+	addPerson('/images/person1.png', 'Matt');
+	addPerson('/images/person2.png', 'Kat');
+	addPerson('/images/person3.png', 'Nicola');
+	addPerson('/images/person4.png', 'Shelley');
+	addPerson('/images/person5.png', 'Alexandra');
+	addPerson('/images/person6.png', 'David');
 
-	function addPerson(image, position) {
+	// setInterval(function() {
+	// 	addPerson('/images/person7.png', 'David');
+	// }, 1000);
+
+	var numberOfPeople = 0;
+
+	function addPerson(image, name) {
 		fabric.Image.fromURL(image, function(oImg) {
 			oImg.set({'left': 800});
-			oImg.set({'top': canvasBottom - (position * stickmanHeight)});
+			oImg.set({'top': canvasBottom - (numberOfPeople++ * stickmanHeight)});
 			oImg.originY = 'bottom';
 			oImg.hasControls = false;
 			oImg.hasBorders = false;
 			oImg.selectable = false;
-			// oImg.hoverCursor = 'pointer';
-			oImg.hoverCursor = 'cursor';
+			oImg.hoverCursor = 'pointer';
+			// oImg.hoverCursor = 'cursor';
+
+			oImg.custom = {
+				name: name
+			};
 
 			canvas.add(oImg);
 		});
 	}
+
+	canvas.on('mouse:up', function(options) {
+		if (options.target && options.target.custom) {
+			var name = options.target.custom.name;
+			alert(name);
+		}
+	});
 
 	function zoomIn(amount) {
 		amount = amount ? amount : 1.1;
@@ -117,6 +136,7 @@
 		var delta = new fabric.Point(horizonal, vertical);
 		canvas.relativePan(delta);
 	}
+
 
 	$(function(){
 		$('#zoomIn').click(function(){
@@ -143,10 +163,9 @@
 			pan(0, 10);
 		});
 
-
-		var dragStart, dragged;
 		var $canvas = $('.upper-canvas');
 		var lastX=$canvas[0].width/2, lastY=$canvas[0].height/2;
+		var dragStart, dragged;
 
 		$canvas[0].addEventListener('mousedown',function(evt) {
 			document.body.style.mozUserSelect = document.body.style.webkitUserSelect = document.body.style.userSelect = 'none';
