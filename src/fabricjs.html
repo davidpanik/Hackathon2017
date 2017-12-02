@@ -1,4 +1,6 @@
+<link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
 <style>
+	body { font-family: 'Poppins', sans-serif; }
 	#canvasContainer {width: 1200px; margin: 30px auto;}
 	button { cursor: pointer; }
 
@@ -15,6 +17,8 @@
 	<button id="goUp">Up</button>
 	<button id="goDown">Down</button>
 	<button id="goDown">Down</button>
+	<button id="addPerson">Add person</button>
+	<button id="addPeople">Add people</button>
 	<a id="save" href="#">Save image</a>
 </p>
 
@@ -23,7 +27,13 @@
 </div>
 
 <div id="sub-modal" style="display: none;">
-	<h2 id="person-name"></h2>
+	<img src="" id="personImage" style="float: left; margin-right: 40px;">
+
+	<h2><span id="firstName"></span> <span id="lastName"></span></h2>
+	<h3>What are you standing for?</h3>
+	<p id="reason"></p>
+	<h3>How much did you donate?</h3>
+	<p>£<span id="donationAmount"></span></p>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -40,41 +50,77 @@
 <script>
 	var canvas = new fabric.Canvas('c');
 	canvas.selection = false;
-	canvas.backgroundColor = '#ADE2FF';
+	canvas.backgroundColor = '#27AAE1';
 
 	var canvasBottom = 4 * 1000;
-	var stickmanHeight = 200;
+	var stickmanHeight = 1.75 * 100; // 1.75
 	var grasswidth = 655;
 	var grassHeight = 700;
+	var skyscraper1Height = 96  * 100; // 96
+	var skyscraper2Height = 300 * 100; // 300
+	var skyscraper3Height = 828 * 100; // 828
+
+	var imagePaths = {
+		'f1': '/images/F1.png',
+		'f2': '/images/F2.png',
+		'f3': '/images/F3.png',
+		'f4': '/images/F4.png',
+		'f5': '/images/F5.png',
+		'm1': '/images/M1.png',
+		'm2': '/images/M2.png',
+		'm3': '/images/M3.png',
+		'm4': '/images/M4.png',
+		'm5': '/images/M5.png'
+	};
 
 	function loadData() {
 		for (var x in localStorage) {
-			var person = localStorage[x];
-			console.log(person);
+			if (x.indexOf('person_') === 0) {
+				var person = JSON.parse(localStorage.getItem(x));
+				console.log(person);
+				console.log(person.firstName);
+				addPerson(imagePaths[person.avatar], person.firstName, person.lastName, person.reason, person.donationAmount);
+			}
 		}
 	}
 
 	function addSkyScrapers() {
-		fabric.Image.fromURL('/images/skyscraper1.png', function(oImg) {
+		fabric.Image.fromURL('/images/Ben.png', function(oImg) {
 			oImg.set({'left': 1600});
 			oImg.set({'top': canvasBottom - grassHeight});
 			oImg.originY = 'bottom';
 			oImg.hasControls = false;
 			oImg.hasBorders = false;
 			oImg.selectable = false;
+			oImg.scaleToHeight(skyscraper1Height);
 			// oImg.hoverCursor = 'pointer';
 			oImg.hoverCursor = 'cursor';
 
 			canvas.add(oImg);
 		});
 
-		fabric.Image.fromURL('/images/skyscraper2.png', function(oImg) {
-			oImg.set({'left': 4000});
+		fabric.Image.fromURL('/images/ETower.png', function(oImg) {
+			oImg.set({'left': 5000});
 			oImg.set({'top': canvasBottom - grassHeight});
 			oImg.originY = 'bottom';
 			oImg.hasControls = false;
 			oImg.hasBorders = false;
 			oImg.selectable = false;
+			oImg.scaleToHeight(skyscraper2Height);
+			// oImg.hoverCursor = 'pointer';
+			oImg.hoverCursor = 'cursor';
+
+			canvas.add(oImg);
+		});
+
+		fabric.Image.fromURL('/images/Dubai.png', function(oImg) {
+			oImg.set({'left': 20000});
+			oImg.set({'top': canvasBottom - grassHeight});
+			oImg.originY = 'bottom';
+			oImg.hasControls = false;
+			oImg.hasBorders = false;
+			oImg.selectable = false;
+			oImg.scaleToHeight(skyscraper3Height);
 			// oImg.hoverCursor = 'pointer';
 			oImg.hoverCursor = 'cursor';
 
@@ -85,7 +131,7 @@
 	function addGrass() {
 		var amountOfGrass = 0;
 
-		for (var x = 0; x < 20; x++) {
+		for (var x = 0; x < 60; x++) {
 			fabric.Image.fromURL('/images/grass.png', function(oImg) {
 				oImg.set({'left': -2000 + (grasswidth * amountOfGrass++)});
 				oImg.set({'top': canvasBottom});
@@ -112,12 +158,14 @@
 	addGrass();
 	setZoomScale();
 
-	addPerson('/images/person1.png', 'Matt');
-	addPerson('/images/person2.png', 'Kat');
-	addPerson('/images/person3.png', 'Nicola');
-	addPerson('/images/person4.png', 'Shelley');
-	addPerson('/images/person5.png', 'Alexandra');
-	addPerson('/images/person6.png', 'David');
+	addPerson('/images/M1.png', 'Matt', 'Brawn', 'Make the world a better place', 100);
+	addPerson('/images/M1.png', 'Kat', 'Nowotny', 'Make the world an even better place', 100);
+	addPerson('/images/F2.png', 'Nicola', 'Dunlop', 'Make the world a better place', 100);
+	addPerson('/images/M2.png', 'David', 'Storey', 'Make the world a better place', 100);
+	addPerson('/images/F3.png', 'Shelley', 'Dewar', 'Make the world a better place', 100);
+	addPerson('/images/F4.png', 'Alexandra', 'Haret', 'Make the world a better place', 100);
+
+	loadData();
 
 	// setInterval(function() {
 	// 	addPerson('/images/person7.png', 'David');
@@ -125,7 +173,7 @@
 
 	var numberOfPeople = 0;
 
-	function addPerson(image, name) {
+	function addPerson(image, firstName, lastName, reason, donationAmount) {
 		fabric.Image.fromURL(image, function(oImg) {
 			oImg.set({'left': 400});
 			oImg.set({'top': canvasBottom - grassHeight - (numberOfPeople++ * stickmanHeight)});
@@ -134,13 +182,20 @@
 			oImg.hasBorders = false;
 			oImg.selectable = false;
 			oImg.hoverCursor = 'pointer';
+			oImg.scaleToHeight(stickmanHeight);
 			// oImg.hoverCursor = 'cursor';
 
 			oImg.custom = {
-				name: name
+				image: image,
+				firstName: firstName,
+				lastName: lastName,
+				reason: reason,
+				donationAmount: donationAmount
 			};
 
 			canvas.add(oImg);
+
+			console.log(numberOfPeople + ' in the stack');
 		});
 	}
 
@@ -148,7 +203,11 @@
 		if (options.target && options.target.custom) {
 			var name = options.target.custom.name;
 
-			$('#person-name').html(name);
+			$('#personImage').attr('src', options.target.custom.image);
+			$('#firstName').html(options.target.custom.firstName);
+			$('#lastName').html(options.target.custom.lastName);
+			$('#reason').html(options.target.custom.reason);
+			$('#donationAmount').html(options.target.custom.donationAmount);
 
 			$('#sub-modal').modal({
 				closeExisting: false
@@ -217,6 +276,16 @@
 			pan(0, 10);
 		});
 
+		$('#addPerson').click(function(){
+			getRandomPerson();
+		});
+
+		$('#addPeople').click(function(){
+			for (var x = 0; x < 10; x++) {
+				getRandomPerson();
+			}
+		});
+
 		$('#save').click(function(){
       		var image = $('#c')[0].toDataURL('image/png').replace('image/png', 'image/octet-stream');
 
@@ -256,4 +325,22 @@
 			// if (!dragged) zoom(evt.shiftKey ? -1 : 1 );
 		},false);
 	});
+
+
+	function rnd(n) {
+		return Math.floor(Math.random() * n);
+	}
+
+	function rndArray(arr) {
+		return arr[rnd(arr.length)];
+	}
+
+	function getRandomPerson() {
+		var images = ['/images/F1.png', '/images/F2.png', '/images/F3.png', '/images/F4.png', '/images/F5.png', '/images/M1.png', '/images/M2.png', '/images/M3.png', '/images/M4.png', '/images/M5.png'];
+		var firstnames = ["Sophia", "Jackson", "Olivia", "Liam", "Emma", "Noah", "Ava", "Aiden", "Isabella", "Lucas", "Mia", "Caden", "Aria", "Grayson", "Riley", "Mason", "Zoe", "Elijah", "Amelia", "Logan", "Layla", "Oliver", "Charlotte", "Ethan", "Aubrey", "Jayden", "Lily", "Muhammad", "Chloe", "Carter", "Harper", "Michael", "Evelyn", "Sebastian", "Adalyn", "Alexander", "Emily", "Jacob", "Abigail", "Benjamin", "Madison", "James", "Aaliyah", "Ryan", "Avery", "Matthew", "Ella", "Daniel", "Scarlett", "Jayce", "Maya", "Mateo", "Mila", "Caleb", "Nora", "Luke", "Camilla", "Julian", "Arianna", "Jack", "Eliana", "William", "Hannah", "Wyatt", "Leah", "Gabriel", "Ellie", "Connor", "Kaylee", "Henry", "Kinsley", "Isaiah", "Hailey", "Isaac", "Madelyn", "Owen", "Paisley", "Levi", "Elizabeth", "Cameron", "Addison", "Nicholas", "Isabelle", "Josiah", "Anna", "Lincoln", "Sarah", "Dylan", "Brooklyn", "Samuel", "Mackenzie", "John", "Victoria", "Nathan", "Luna", "Leo", "Penelope", "David", "Grace", "Adam", "Elena", "Eli", "Peyton", "Landon", "Lillian", "Joseph", "Skyler", "Christian", "Natalie", "Ian", "Charlie", "Anthony", "Stella", "Brayden", "Savannah", "Aaron", "Kennedy", "Hunter", "Lila", "Adrian", "Liliana", "Joshua", "Bella", "Andrew", "Callie", "Carson", "Audrey", "Dominic", "Lucy", "Asher", "Aurora", "Colton", "Hazel", "Christopher", "Makayla", "Jordan", "Violet", "Bryson", "Reagan", "Ezra", "Emery", "Easton", "Emilia", "Xavier", "Gabriella", "Jeremiah", "Maria", "Zane", "Sophie", "Luca", "Claire", "Charlie", "Everly", "Nolan", "Allison", "Hudson", "Eva", "Damian", "Eleanor", "Thomas", "Melanie", "Max", "Kylie", "Evan", "Nevaeh", "Jonathan", "Alice", "Miles", "Adeline", "Elliot", "Alaina", "Elias", "Gianna", "Austin", "London", "Kai", "Naomi", "Ezekiel", "Bailey", "Xander", "Serenity", "Maverick", "Jocelyn", "Chase", "Juliana", "Tristan", "Julia", "Jason", "Isla", "Cooper", "Sadie", "Jameson", "Ariel", "Gavin", "Caroline", "Alex", "Jasmine", "Eric", "Clara", "Bentley"];
+		var lastNames = ["Mcallister", "Pearson", "Elisabetha", "Jakes", "Sheckleton", "De velville", "O'day", "Sweet", "Cowan", "Laney", "Ferguson", "Lester", "Malkin", "Virgin", "Lamming", "Goode", "Ofspring", "Bechtal", "Farrar nee riley", "Goodfellow", "Bray", "Mcrae", "Knoll", "De blaquiere", "Champagne", "Fallen", "Standefer", "Ilderton", "Thistlethwaite", "Cordingly", "Rowland", "Jalfon", "Thwenge", "Bender", "Wayles", "Penny", "Fairfield", "Melrose", "Marshall", "Kirkham", "Cain", "Thirlwind", "Baines", "Sidney", "Locket", "Bird", "Kilduff", "Mceachern", "Graw", "Streeter", "Peacock", "Woodrom", "Gorin", "Vraithwaite", "Carruthers", "Norcat", "Rycroft or mcglasson", "Mcwhorter", "Lyster", "Wildsmith", "Halliman", "Baird nee", "Surgeson", "Horner", "Withers", "Marion", "Reading", "Mckone", "Cassell", "Dilahoy", "Ransay", "Barlow", "Eliabeth", "Horncastle", "Stone", "Sleigh", "Lauder", "Glendinin", "Hermitton", "Thwaits", "Cummins", "Burgher", "Templeton", "Mc pherson", "Baisley", "Docker", "Sparks", "Mundle", "Shelton", "Sherrard", "Barrett", "Spurgeon", "Orbell", "Kennedy", "Smale", "Dodwell", "Delong", "Hobbs", "Haselford", "Kerr", "Hawksworth", "Woodgate", "Toulmin", "Brannon", "Edmonson", "Pennell", "Greene", "Buckley", "Wadson", "Paulsen", "Reviere", "Maclane", "Crute", "Abson", "Lodge", "Prue", "C", "Athy", "Barlow", "Pennison", "Tilney", "Oversby", "De braganza", "Reneau", "Watters", "Blades", "Eshelby", "Campy", "Moltz", "Odell", "Gawthorpe", "Batterham", "Nicholson", "Devereaux", "Carruthers", "Warren", "Weatherill", "Leatherman", "Bewley", "Thelma", "Dale", "Simmonds", "Hopkinson", "Hoil", "Simpson", "Wroughton", "Coad", "Westby", "Arrowsmith", "Cruix/cruik", "Niblett", "Twitchett", "Towsey", "Tinsley", "Norwood", "Stelzriede", "Whotton", "Whitehead", "Wright", "Mckinnel", "Moorfoot", "Gardner", "Naddox", "Farran", "Mcauslan", "Senior", "Dibble", "Lithgow", "Foulkes", "Figgins", "Hetherington", "Lunn", "Cadell", "Tame", "Wyche", "Swerdfeger", "Cleaver", "Tyler", "Thorpe", "Hadwin", "Mather", "Shacklock", "Entwhistle", "Jaques", "Jeffeaux", "Carloss", "Homon", "Holdcroft", "Calverley", "Beckner", "Bolin", "Jerrett", "Pettifer", "H", "Binyon", "Lance", "Money", "Mclearey", "Sperry", "Wayles", "Snead", "Curhbertson", "Roebuck", "Socket", "Francois", "Goodchild", "Three sons", "Dunham", "Greenop", "Huggonson", "Keim", "Hully", "Cornthwaite", "Jordan", "Dettevillier", "Burrowes", "Von nassau-dillenberg", "Spradlin", "Sadlier", "Cross", "Cady", "Pinel", "Brewsher", "Johansen", "Pighills", "Tyson", "Baring", "Ludlow", "Merrick", "Matthews", "De bourbon", "Hucklescott", "Selbye", "Yarker", "Epworth", "Buttimer", "Golland", "Colunga", "Hart", "Raikes", "Moss", "Tierney", "Cowling", "Sparks", "Grey", "Hopkinson", "Whyte", "Fernhough", "Eshelby", "Respy", "Lea", "Hick", "Isherwood", "Millichamp", "Turney", "Constance", "Longhurst", "Weal", "Ramage", "Clewer", "Leybourne", "Wilkes", "Milroy", "Fyle", "Wilde", "Vanover", "Ionson", "Furse", "Bristoe", "Talboys", "Blee", "Reresby", "Ross-skudder", "Edinger", "Mccune", "Casson", "Preen", "Mainstone", "Humphryes", "Ashworth", "Flatley", "Woodburn", "Hough", "Schneider", "Meaby", "Gordon", "Withers", "Chetwynd", "Fitz hugh", "Potman", "Gamble", "Stebbings", "Peake", "Wier", "Conyers", "O'rourke", "Tilney", "Newark", "Alwood", "Albert"];
+		var donations = [1, 1, 5, 5, 5, 10, 10, 10, 10, 10, 10, 20, 20, 25, 30, 30, 30, 50, 50, 50, 60, 70, 75, 100, 100, 125];
+
+		addPerson(rndArray(images), rndArray(firstnames), rndArray(lastNames), '', rndArray(donations));
+	}
 </script>
