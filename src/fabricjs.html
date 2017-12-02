@@ -40,12 +40,16 @@
 <script>
 	var canvas = new fabric.Canvas('c');
 	canvas.selection = false;
-	canvas.backgroundColor = '#ADE2FF';
+	canvas.backgroundColor = '#27AAE1';
 
 	var canvasBottom = 4 * 1000;
-	var stickmanHeight = 200;
+	var stickmanHeight = 1.75 * 100; // 1.75
 	var grasswidth = 655;
 	var grassHeight = 700;
+	var skyscraper1Height = 96  * 100; // 96
+	var skyscraper2Height = 300 * 100; // 300
+	var skyscraper3Height = 828 * 100; // 828
+
 
 	function loadData() {
 		for (var x in localStorage) {
@@ -55,26 +59,42 @@
 	}
 
 	function addSkyScrapers() {
-		fabric.Image.fromURL('/images/skyscraper1.png', function(oImg) {
+		fabric.Image.fromURL('/images/Ben.png', function(oImg) {
 			oImg.set({'left': 1600});
 			oImg.set({'top': canvasBottom - grassHeight});
 			oImg.originY = 'bottom';
 			oImg.hasControls = false;
 			oImg.hasBorders = false;
 			oImg.selectable = false;
+			oImg.scaleToHeight(skyscraper1Height);
 			// oImg.hoverCursor = 'pointer';
 			oImg.hoverCursor = 'cursor';
 
 			canvas.add(oImg);
 		});
 
-		fabric.Image.fromURL('/images/skyscraper2.png', function(oImg) {
-			oImg.set({'left': 4000});
+		fabric.Image.fromURL('/images/ETower.png', function(oImg) {
+			oImg.set({'left': 5000});
 			oImg.set({'top': canvasBottom - grassHeight});
 			oImg.originY = 'bottom';
 			oImg.hasControls = false;
 			oImg.hasBorders = false;
 			oImg.selectable = false;
+			oImg.scaleToHeight(skyscraper2Height);
+			// oImg.hoverCursor = 'pointer';
+			oImg.hoverCursor = 'cursor';
+
+			canvas.add(oImg);
+		});
+
+		fabric.Image.fromURL('/images/Dubai.png', function(oImg) {
+			oImg.set({'left': 20000});
+			oImg.set({'top': canvasBottom - grassHeight});
+			oImg.originY = 'bottom';
+			oImg.hasControls = false;
+			oImg.hasBorders = false;
+			oImg.selectable = false;
+			oImg.scaleToHeight(skyscraper3Height);
 			// oImg.hoverCursor = 'pointer';
 			oImg.hoverCursor = 'cursor';
 
@@ -85,7 +105,7 @@
 	function addGrass() {
 		var amountOfGrass = 0;
 
-		for (var x = 0; x < 20; x++) {
+		for (var x = 0; x < 60; x++) {
 			fabric.Image.fromURL('/images/grass.png', function(oImg) {
 				oImg.set({'left': -2000 + (grasswidth * amountOfGrass++)});
 				oImg.set({'top': canvasBottom});
@@ -112,12 +132,12 @@
 	addGrass();
 	setZoomScale();
 
-	addPerson('/images/person1.png', 'Matt');
-	addPerson('/images/person2.png', 'Kat');
-	addPerson('/images/person3.png', 'Nicola');
-	addPerson('/images/person4.png', 'Shelley');
-	addPerson('/images/person5.png', 'Alexandra');
-	addPerson('/images/person6.png', 'David');
+	addPerson('/images/F1.png', 'Matt');
+	addPerson('/images/M1.png', 'Kat');
+	addPerson('/images/F2.png', 'Nicola');
+	addPerson('/images/M2.png', 'Shelley');
+	addPerson('/images/F3.png', 'Alexandra');
+	addPerson('/images/M3.png', 'David');
 
 	// setInterval(function() {
 	// 	addPerson('/images/person7.png', 'David');
@@ -134,6 +154,7 @@
 			oImg.hasBorders = false;
 			oImg.selectable = false;
 			oImg.hoverCursor = 'pointer';
+			oImg.scaleToHeight(stickmanHeight);
 			// oImg.hoverCursor = 'cursor';
 
 			oImg.custom = {
